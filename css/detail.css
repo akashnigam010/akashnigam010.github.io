@@ -1,0 +1,72 @@
+
+.icon-location {
+    background-image: url("../img/ic_location_black.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px;
+}
+
+.icon-search {
+    background-image: url("../img/ic_search_black.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 15px;
+}
+
+
+/* Media Queries CSS - STARTS */
+@media (min-width: 768px) {
+	.detail-about > .col-sm-8 {
+	    width: 65.666667%;
+	}
+}
+/* Media Queries CSS - ENDS */
+
+.primary-image-banner {
+	height: 250px;
+    border-radius: 4px;
+    box-shadow: 0px 1px 1px #888888;
+}
+
+.primary-image-wrapper {
+  padding-top: 1%;
+}
+
+.sub-section {
+    padding: 1% 0%;
+}
+
+.recommended-item {
+	padding: 3%;
+}
+
+.recommend-item-name {
+	padding-top: 2%;
+}
+
+.detail-type-padding {
+	padding: 5%;
+}
+
+hr {
+    margin-top: 2px;
+    margin-bottom: 2px; 
+}
+
+.recommend-button {
+    width: 50%;
+    height: 45px;
+}
+
+.my-recommendations {
+    padding-bottom: 5%;
+}
+
+.error-label {
+    margin-top: -5%;
+    margin-bottom: 5%;
+}
+
+.recommend-item-desc {
+    padding: 3% 0%;
+}

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#9932CC">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    <title>Bananaa</title>
+
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"></link> -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="css/bna-commons.css" rel="stylesheet"></link>
+    <link href="css/tag.css" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" media="only screen and (max-width: 768px), only screen and (max-device-width: 768px)" href="css/tag-mini.css" />
+    <link href="css/jqcloud.min.css" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="hide" id="primaryImageTemp">https://bna-s3.s3.amazonaws.com/d/27/jalapeno-poppers.jpg</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row top-header">
+                    <div class="simpson header-icon bna-color">
+                        <div class="hidden-sm hidden-md hidden-lg float-left">
+                            <img class="cursor-pointer float-left" src="http://cdn.bananaa.in/img/arrow_back_black.svg" onclick="window.history.back()" />
+                        </div>
+                        <div style="float: left; display: inline;">
+                            <span class="cursor-pointer" onclick="location.href='http://www.bananaa.in';" style="margin-left: 5%;">bananaa</span>
+                        </div>
+                    </div>
+                    <!-- desktop/tablet screen -->
+                    <div class="hidden-xs">
+                        <div class="pull-right">
+                            <div class="btn-group login-info">
+                                <button type="button" id="login-button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <span id="login-info">Login</span> <span class="caret"></span>                        
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:logout();">My Profile</a></li>
+                                    <li><a href="javascript:logout();">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-horizontal">
+                            <div class="form-group-lg has-feedback" style="float: left; display: inline; width: 140px; margin-left: 8%;">
+                                <input id="topSearchLocation" class="cursor-pointer header-search-input" type="text" placeholder="Type your location" value="Hyderabad" />
+                                <i class="glyphicon icon-location form-control-feedback" style="width: 15px; height: 40px;"></i>
+                            </div>    
+                        </div>
+                        <div class="form-horizontal">
+                            <div class="form-group-lg has-feedback" style="float: left; display: inline; width: 35%; margin-left: 0.5%;">
+                                <input id="topSearchInput" class="header-search-input noloading" type="text" placeholder="Search for a restaurant, cuisine or dish" />
+                                <i class="glyphicon icon-search form-control-feedback" style="width: 15px; height: 40px;"></i>
+                                <!-- <div class="input-loader-animation-div" style="width: 100%;">
+                                    <img class="input-loader-animation" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                                </div> -->
+                            </div>    
+                        </div>
+
+                        <div style="float: left; display: inline; margin-left: 0.5%;">
+                            <button class="bna-button" style="margin: 0px; line-height: inherit;">Search</button>
+                        </div>                     
+                    </div>
+                    <!-- mobile screen -->
+                    <div class="hidden-sm hidden-md hidden-lg">
+                        <div class="btn-group pull-right" style="margin-left: 8%">
+                            <img class="dropdown-toggle" data-toggle="dropdown" src="img/ic_person_black.svg" />                      
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:logout();">My Profile</a></li>
+                                <li><a href="javascript:logout();">Logout</a></li>
+                            </ul>
+                        </div>
+                        <div class="pull-right">
+                            <img src="img/ic_search_black.svg" onclick="openSearchModal();" />
+                        </div>
+                    </div>                  
+                </div>
+            </div>
+            <!-- Full screen Modal STARTS -->
+            <div class="modal fade" id="searchModal" role="dialog" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog fullscreen-modal-dialog">
+                    <div class="modal-content fullscreen-modal-content">                    
+                        <div class="modal-header align-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <img src="http://cdn.bananaa.in/img/clear.svg" />
+                            </button>
+                            <h4 class="modal-title bold">Search</h4>
+                        </div>
+                        <div class="modal-body align-center" style="padding: 7%;">
+                            <div class="form-horizontal">
+                                <div class="form-group-lg has-feedback">
+                                    <input id="topSearchLocation" class="cursor-pointer header-search-input" type="text" placeholder="Type your location" value="Hyderabad" />
+                                    <i class="glyphicon icon-location form-control-feedback" style="width: 15px; height: 40px;"></i>
+                                </div>    
+                            </div>
+                            <div class="form-horizontal" style="margin-top: 5%;">
+                                <div class="form-group-lg has-feedback">
+                                    <input id="modalSearchInput" class="header-search-input noloading" type="text" data-provide="typeahead" placeholder="Search for a restaurant, cuisine or dish" />
+                                    <i class="glyphicon icon-search form-control-feedback" style="width: 15px; height: 40px;"></i>
+                                    <!-- <div class="input-loader-animation-div" style="width: 100%;">
+                                        <img class="input-loader-animation" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                                    </div> -->
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Full screen Modal ENDS -->         
+        </div>
+
+        <div class="row bna-bg primary-image-wrapper">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 primary-image-banner cursor-pointer" onclick="imageView();" style="height: 150px;">
+            </div>    
+        </div>        
+
+        <div class="row bna-bg">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+				<div style="padding: 3% 0%;">
+					<span class="light font-1-5">Following places serve</span> &nbsp;
+                    <span class="bold font-2">'Italian'</span> &nbsp; 
+                    <span class="light font-1-5">in Hitech City</span>	
+				</div>
+                <div class="row">
+                	<div class="detail-about">
+                        <div class="col-xs-12 col-sm-12">
+                        	<div class="hide" style="height: 150px;">
+                        		<p>Oops, no more results found for Italian in Hitech City. </p>
+                        		<p><span style="font-size: 50px;">&#128532;</span></p>
+                        		<p>We are working on it !</p>
+                        		<p>Why not go back a page or try a different search ?</p>
+                        	</div>
+                            <div class="row white-background details-wrapper" style="margin-top: 10px;">
+                                <div class="col-xs-12">
+                                    <div class="row" style="padding: 2% 0%;">
+                                    	<div class="col-xs-12">
+                                        	<div class="hidden-xs float-left cursor-pointer" style="margin-right: 4%;">
+                                    			<img class="rest-thumbnail" src="https://bna-s3.s3.amazonaws.com/rest-img/fusion-9-hitech-city.jpg" />
+                                    		</div>
+                                            <div class="float-left">
+                                            	<div class="light">
+                                                    Bar, Kitchen, Bistro
+                                                </div>
+                                            	<div class="bold item-name font-1-5 bna-color cursor-pointer">
+                                                    Little Italy
+                                                </div>
+                                                <div class="light">
+                                                    Hitech City, Hyderabad
+                                                </div>
+                                                <div class="padding-top bold">
+                                                	<span>Spread of</span>
+                                                	<span>20+</span>
+                                                	<span>Italian</span>
+                                                	<span>dishes</span>                                                	 
+                                                </div>
+                                            </div>
+                                            <div class="float-right">
+                                            	<div>
+                                            		<span class="float-right rating-rcmd r45 bold" style="padding: 5px 10px; font-size: 1.1em;">4.5</span>
+                                            	</div>
+                                            	<div>
+													<div class="float-right light padding-top">
+	                                            		Rated in
+	                                            	</div>
+                                            	</div>
+                                            	<div>
+													<div class="float-right light">
+	                                            		Mediterranean
+	                                            	</div>
+                                            	</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 padding-bottom">
+                                        	<hr style="margin-top: 10px; margin-bottom: 15px;" />
+                                        	<div class="info-highlights">
+                                        		<div class="upper float-left light">
+	                                        		Cost for two
+	                                        	</div>
+	                                        	<div style="margin-left: 30%;">
+	                                        		&#8377 1300
+	                                        	</div>
+                                        	</div>
+                                        	<div class="info-highlights">
+                                        		<div class="upper float-left light">
+	                                        		Hours
+	                                        	</div>
+	                                        	<div style="margin-left: 30%;">
+	                                        		10:00 AM to 09:00 PM
+	                                        	</div>
+                                        	</div>
+                                        	<div class="info-highlights">
+                                        		<div class="upper float-left light">
+	                                        		Cuisines
+	                                        	</div>
+	                                        	<div style="margin-left: 30%;">
+	                                        		<span>
+	                                        			<span>Italian</span> 
+	                                        			<span class="rating-rcmd r45">4.5</span>
+	                                        		</span>
+	                                        		<span>
+	                                        			<span>Mexican</span> 
+	                                        			<span class="rating-rcmd r40">4.2</span>
+	                                        		</span>
+	                                        		<span>
+	                                        			<span>Mediterranean</span> 
+	                                        			<span class="rating-rcmd r30">3.3</span>
+	                                        		</span>
+	                                        	</div>
+                                        	</div>
+                                        </div>                                                                               
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row white-background details-wrapper" style="margin-top: 10px;">
+                                <div class="col-xs-12">
+                                    <div class="row" style="padding: 2% 0%;">
+                                    	<div class="col-xs-12">
+                                        	<div class="hidden-xs float-left cursor-pointer" style="margin-right: 4%;">
+                                    			<img class="rest-thumbnail" src="https://bna-s3.s3.amazonaws.com/rest-img/fusion-9-hitech-city.jpg" />
+                                    		</div>
+                                            <div class="float-left">
+                                            	<div class="light">
+                                                    Bar, Kitchen, Bistro
+                                                </div>
+                                            	<div class="bold item-name font-1-5 bna-color cursor-pointer">
+                                                    Urban Asia - Kitchen and Bar
+                                                </div>
+                                                <div class="light">
+                                                    Jubilee Hills, Hyderabad
+                                                </div>
+                                                <div class="padding-top bold">
+                                                	<span>Spread of</span>
+                                                	<span>40+</span>
+                                                	<span>Italian</span>
+                                                	<span>dishes</span> 
+                                                </div>
+                                            </div>
+                                            <div class="float-right">
+                                            	<div>
+                                            		<span class="float-right rating-rcmd r30 bold" style="padding: 5px 10px; font-size: 1.1em;">3.2</span>
+                                            	</div>
+                                            	<div>
+													<div class="float-right light padding-top">
+	                                            		Rated in
+	                                            	</div>
+                                            	</div>
+                                            	<div>
+													<div class="float-right light">
+	                                            		Italian
+	                                            	</div>
+                                            	</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 padding-bottom">
+                                        	<hr style="margin-top: 10px; margin-bottom: 15px;" />
+                                        	<div class="info-highlights">
+                                        		<div class="upper float-left light">
+	                                        		Cost for two
+	                                        	</div>
+	                                        	<div style="margin-left: 30%;">
+	                                        		&#8377 1300
+	                                        	</div>
+                                        	</div>
+                                        	<div class="info-highlights">
+                                        		<div class="upper float-left light">
+	                                        		Hours
+	                                        	</div>
+	                                        	<div style="margin-left: 30%;">
+	                                        		10:00 AM to 09:00 PM
+	                                        	</div>
+                                        	</div>
+                                        	<div class="info-highlights">
+                                        		<div class="upper float-left light">
+	                                        		Cuisines
+	                                        	</div>
+	                                        	<div style="margin-left: 30%;">
+	                                        		<span>
+	                                        			<span>Italian</span> 
+	                                        			<span class="rating-rcmd r45">4.5</span>
+	                                        		</span>
+	                                        		<span>
+	                                        			<span>Mexican</span> 
+	                                        			<span class="rating-rcmd r40">4.2</span>
+	                                        		</span>
+	                                        		<span>
+	                                        			<span>Mediterranean</span> 
+	                                        			<span class="rating-rcmd r30">3.3</span>
+	                                        		</span>
+	                                        	</div>
+                                        	</div>
+                                        </div>                                                                               
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row " style="margin: 5% 0%;">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-12 padding-3">
+                                                <div class="float-left">
+													<!-- Page 1 of 2                                               	 -->
+                                                </div>
+                                                <div class="float-right">
+													<button class="bna-button-light" value="<" style="margin-top: 0px;" onclick="prev();">Prev</button>
+													<span>1</span>
+													<button class="bna-button-light" style="margin-top: 0px;" onclick="next();">Next</button>
+                                                </div>
+                                            </div>  
+                                        </div>                                   
+                                    </div>
+                                </div>
+                            </div>                      
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer STARTS -->
+        <div class="row footer" align="center">
+            <div class="col-xs-12">
+                <div>
+                    <a href="https://www.facebook.com/gobananaa">
+                        <img src="img/facebook-logo.png"  class="social-icon">
+                    </a>
+                    <a href="https://twitter.com/inbananaa">
+                        <img src="img/twitter-logo.png"  class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com/bananaa.in">
+                        <img src="img/instagram-logo.png"  class="social-icon">    
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links col-xs-12">
+                <span class="footer-links-desc"><a href="about.html">About</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="contact.html">Contact</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="privacy.html">Privacy</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="terms.html">Terms</a></span>
+            </div>
+        </div>
+        <!-- Footer ENDS -->
+
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js "></script>
+    <script src="js/bootstrap3-typeahead.min.js "></script>
+    <script src="js/main.js"></script>
+    <script src="js/tag-search.js"></script>    
+
+</body>
+
+</html>

@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    <title>Bananaa</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet"></link>
+    <link href="css/bna-commons.css" rel="stylesheet"></link>
+    <style type="text/css">
+        label {
+            top : 0px;
+            position: initial;
+        }
+        .grid {
+          	width: 100%;
+          	height: 100%;
+        }
+        .loader-animation {
+          position: absolute;
+          height: 15%;
+          left: 50%;
+          top: 100%;
+        }
+        .loader-animation-rating {
+          position: absolute;
+          height: 15%;
+          left: 50%;
+          top: 50%; 
+        }
+        .no-margin {
+          margin: -4px 0 0 !important;
+        }
+        .radio-inline {
+          padding-left: 0px;
+          padding-right: 15px;
+        }
+        .new-rest-label {
+          text-align: left !important;
+        }
+
+    </style>
+</head>
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js "></script>
+<script src="js/bootstrap3-typeahead.min.js "></script>
+<script src="js/main.js"></script>
+<script src="js/manage.js"></script>
+<script src="js/manageDishes.js"></script>
+<script src="js/rateEngine.js"></script>
+<script type="text/javascript" src="http://underscorejs.org/underscore-min.js"></script>
+<body>  
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 padding-3 bold">
+                <h2 class="float-left">Bananaa Management Console</h2>
+                <form action="/blogin" method="get">
+                  <button class="bna-button-light float-right" type="submit">Logout</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            
+        <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+
+                        <ul class="nav nav-tabs bna-color">
+                          <li class="active"><a data-toggle="tab" href="#itemTab">Add Dish</a></li>
+                          <li><a data-toggle="tab" href="#editTab">Edit Dishes</a></li>
+                          <li><a data-toggle="tab" href="#tagsTab">Tags</a></li>
+                          <li><a data-toggle="tab" href="#addRcmdTab">Recommendations</a></li>
+                          <li><a data-toggle="tab" href="#ratingTab">Rate Engines</a></li>
+                          <li><a data-toggle="tab" href="#editFlagsTab">Edit Flags</a></li>
+                          <li><a data-toggle="tab" href="#merchantTab">Add New Restaurant</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div id="itemTab" class="tab-pane fade in active">
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">City</label>
+                                <div class="col-sm-5">
+                                  <select class="form-control" id="inputEmail3">
+                                      <option selected="true" value="1">Hyderabad</option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Restaurant</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="restaurantName" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="itemName" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Veg or Non-veg</label>
+                                <div class="col-sm-10">
+                                  <div class="checkbox col-sm-2">
+                                    <input type="radio" name="vegOrNonVeg" value="1">Veg</input>    
+                                  </div>
+                                  <div class="checkbox col-sm-2">
+                                    <input type="radio" name="vegOrNonVeg" value="2">Non Veg</input>                                    
+                                  </div>
+                                  <div class="checkbox col-sm-2">
+                                    <input type="radio" name="vegOrNonVeg" value="3">Both</input>                                    
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Suggestion Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="suggestionName" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Suggestions :</label>
+                                <div class="col-sm-4">
+                                  <p id="suggestion-name-display"></p>
+                                </div>
+                                <div class="col-sm-1">
+                                  <span class="font-1-3 cursor-pointer">&#10006;</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Cuisine</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="cuisineName" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Cuisines :</label>
+                                <div class="col-sm-4">
+                                  <p id="cuisine-name-display"></p>
+                                </div>
+                                <div class="col-sm-1">
+                                  <span class="font-1-3 cursor-pointer">&#10006;</span>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold bna-color">SEARCH IMAGE</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="imageSearch-add" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Image</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" required="required" autocomplete="off" id="image"></input>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Thumbnail</label>
+                                <div class="col-sm-5">
+                                  <input type="text" class="form-control" required="required" autocomplete="off" id="thumbnail"></input>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <div class="checkbox">
+                                    <input type="checkbox" checked="checked" id="isActive" value="true">Is Active</input>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <button type="button" class="btn btn-default bna-button" onclick="addItem()">Add Item</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div id="tagsTab" class="tab-pane fade">
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label bold">Suggestion Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="suggestionNameAdd" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <button type="button" class="btn btn-default bna-button" onclick="addSuggestion()">Add Suggestion Name</button>
+                                </div>
+                              </div>
+                              <hr />
+                              <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label bold">Cuisine Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="cuisineNameAdd" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <button type="button" class="btn btn-default bna-button" onclick="addCuisine()">Add Cuisine</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div id="addRcmdTab" class="tab-pane fade">
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Restaurant</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="rcmd-restaurantName" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="rcmd-itemName" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Recommendations</label>
+                                <div class="col-sm-5">
+                                  <input type="number" class="form-control" required="required" id="rcmd-recommendations"></input>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <button type="button" class="btn btn-default bna-button" onclick="addRecommendations()">Add Recommendations</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div id="editTab" class="tab-pane fade">
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label bold">Restaurant</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="restaurantNameModal" autocomplete="off" />
+                                </div>
+                                <div class="col-sm-1">
+                                  <button type="button" class="bna-button-light font-1-3" style="margin:0; padding: 0; background-color: transparent;" onclick="refreshList();">&#x21bb;</button>
+                                </div>                                
+                              </div>
+                            </form>
+                            <table class="table table-striped table-hover" style="margin-bottom: 100px;">
+                              <thead>
+                                <tr>
+                                  <th style="width: 10%;">Id</th>
+                                  <th style="width: 30%;">Name</th>
+                                  <th style="width: 15%;">V/NV/B</th>
+                                  <th style="width: 20%;">Suggestions</th>
+                                  <th style="width: 20%;">Cuisines</th>
+                                </tr>
+                              </thead>
+                              <tbody class="grid-body">
+                              </tbody>                              
+                            </table>
+                            <div class="col-sm-2">
+                              <button type="button" class="btn btn-default bna-button" onclick="saveVegNonvegValues()">Save Veg/Nonveg Values</button>
+                            </div>
+                            <img class="loader-animation hide" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                          </div>
+
+                          <div id="ratingTab" class="tab-pane fade">
+                            <img class="loader-animation-rating" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label bold">Restaurant</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="restaurantNameRating" autocomplete="off" />
+                                </div>
+                              </div>
+                            </form>
+
+                            <div class="row rateRest hide">
+                              <div class="col-xs-3 font-1-3" style="padding-top: 1%;">
+                                Id : <span class="bold" id="ratingRestId">2</span>
+                              </div>
+                              <div class="col-xs-6 font-1-3 bold" id="ratingRestName" style="padding-top: 1%;">
+                                Fusion 9, Hitech City Hyderabad
+                              </div>
+                              <div class="col-xs-3">
+                                <button type="button" class="bna-button" onclick="rateARestaurants();">Run Engine</button>
+                              </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                              <div class="col-xs-3 font-1-3" style="padding-top: 1%;">
+                                
+                              </div>
+                              <div class="col-xs-6" style="padding-top: 1%;">
+                                <input type="text" id="restIdsRating" placeholder="Enter comma seperated restaurant ids to rate" />
+                              </div>
+                              <div class="col-xs-3">
+                                <button type="button" class="bna-button" onclick="rateManyRestaurants();">Run Engine</button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div id="editFlagsTab" class="tab-pane fade">
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Restaurant Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" data-provide="typeahead" id="restaurantNameFlag" required="required" autocomplete="off" />
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Is Active</label>
+                                <div class="col-sm-10">
+                                  <div class="checkbox col-sm-1">
+                                    <input type="radio" name="isActive" value="true">Yes</input>    
+                                  </div>
+                                  <div class="checkbox col-sm-1">
+                                    <input type="radio" name="isActive" value="false">No</input>                                    
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Can Edit Menu</label>
+                                <div class="col-sm-10">
+                                  <div class="checkbox col-sm-1">
+                                    <input type="radio" name="canEdit" value="true">Yes</input>    
+                                  </div>
+                                  <div class="checkbox col-sm-1">
+                                    <input type="radio" name="canEdit" value="false">No</input>                                    
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <button type="button" class="btn btn-default bna-button" onclick="updateFlags()">Update Flags</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                          <div id="merchantTab" class="tab-pane fade">
+                            <form class="form-horizontal padding">
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Name</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="nameNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">XYZ Bar And Cafe</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Name ID</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="nameIdNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">xyz-bar-and-cafe-hitech-city</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Phone</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="phoneNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">1231231232</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Address</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="addressNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">Level 10, Inorbit Mall, Hitech City, Hyderabad</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Locality ID</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="localityIdNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">3</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Type</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="typeNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">Fine Dining, Bar, Casual Dining</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Average Cost</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="averageCostNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">1650</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Image URL</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="imageUrlNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">https://s3.ap-south-1.amazonaws.com/bna-s3/rest-img/air-cube-jubilee-hills.jpg</label>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-2 control-label bold">Thumbnail</label>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="thumbnailNew" required="required" autocomplete="off" />
+                                </div>
+                                <label class="col-sm-3 control-label new-rest-label">https://s3.ap-south-1.amazonaws.com/bna-s3/rest-img/t/air-cube-jubilee-hills.jpg</label>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-sm-offset-2 col-sm-10">
+                                  <button type="button" class="btn btn-default bna-button" onclick="addNewMerchant()">Add Restaurant</button>
+                                </div>
+                              </div>
+                            </form>
+                          </div>
+
+                        </div>                       
+                    </div>                    
+                </div>
+            </div>           
+        </div>
+
+        <!-- Dish Edit Modal STARTS -->
+        <div class="modal fade" id="editModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="loader hide"></div>
+                    <div class="main-area">
+                        <div class="modal-header align-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-times" aria-hidden="true" style="color:black"></i>
+                            </button>
+                            <h4 class="modal-title bold" id="alertHeading">Edit Dish</h4>
+                        </div>
+                        <div class="modal-body align-center">
+                          <form class="form-horizontal padding">
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Name</label>
+                              <div class="col-sm-8">
+                                <input class="form-control" type="text" id="itemNameModal" required="required" autocomplete="off" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label bold">Veg or Non-veg</label>
+                                <div class="col-sm-9">
+                                  <div class="checkbox col-sm-3">
+                                    <input type="radio" name="vegOrNonVeg" value="1">Veg</input>    
+                                  </div>
+                                  <div class="checkbox col-sm-3">
+                                    <input type="radio" name="vegOrNonVeg" value="2">Non Veg</input>                                    
+                                  </div>
+                                  <div class="checkbox col-sm-3">
+                                    <input type="radio" name="vegOrNonVeg" value="3">Both</input>                                    
+                                  </div>
+                                </div>
+                              </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Suggestion Name</label>
+                              <div class="col-sm-8">
+                                <input class="form-control" type="text" data-provide="typeahead" id="suggestionNameModal" autocomplete="off" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Suggestions :</label>
+                              <div class="col-sm-7 align-left bold">
+                                <p id="suggestion-name-display-modal"></p>
+                              </div>
+                              <div class="col-sm-1">
+                                <span class="font-1-3 cursor-pointer" onclick="resetModalSuggestions();">&#10006;</span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Cuisine</label>
+                              <div class="col-sm-8">
+                                <input class="form-control" type="text" data-provide="typeahead" id="cuisineNameModal" autocomplete="off" />
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Cuisines :</label>
+                              <div class="col-sm-7 align-left bold">
+                                <p id="cuisine-name-display-modal"></p>
+                              </div>
+                              <div class="col-sm-1">
+                                <span class="font-1-3 cursor-pointer" onclick="resetModalCuisines();">&#10006;</span>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Image</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" required="required" autocomplete="off" id="imageModal"></input>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <label class="col-sm-3 control-label bold">Thumbnail</label>
+                              <div class="col-sm-8">
+                                <input type="text" class="form-control" required="required" autocomplete="off" id="thumbnailModal"></input>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer align-center">
+                            <button class="bna-button" style="width: 25%;" onclick="updateDish();">Update</button>
+                            <button class="bna-button-light" style="width: 25%;" data-dismiss="modal" aria-label="Close">Discard</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Dish Edit Modal ENDS --> 
+
+    </div>
+</body>
+
+</html>

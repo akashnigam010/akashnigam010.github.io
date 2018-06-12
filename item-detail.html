@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#9932CC">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    <title>Bananaa</title>
+
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="css/bna-commons.css" rel="stylesheet"></link>
+    <link href="css/item-detail.css" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" media="only screen and (max-width: 480px), only screen and (max-device-width: 480px)" href="css/item-detail-mini.css" />
+    <link href="css/jqcloud.min.css" rel="stylesheet"></link>
+    <script src="https://use.fontawesome.com/a7626c9592.js"></script>
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="hide" id="primaryImageTemp">https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png</div>
+        <div class="row primary-image-banner">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <p class="simpson header-icon cursor-pointer">
+                            <img src="http://cdn.bananaa.in/img/arrow_back.svg" onclick="window.history.back()" />
+                            <span onclick="location.href='http://www.bananaa.in';" style="margin-left: 5%;">bananaa</span>
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="btn-group login-info pull-right">
+                            <button type="button" id="login-button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false">
+                                <span id="login-info">Login</span> <span class="caret"></span>                        
+                            </button>
+                            <ul id="login-dropdown" class="dropdown-menu pull-right">
+                                    <li><a href="javascript:logout();">Logout</a></li>
+                                </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+        </div>
+
+        <div class="row merchant-detail-background bna-bg">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 merchant-detail-main">
+                <div class="row white-background details-wrapper details-top-wrapper">
+                    <div class="col-xs-12">
+                        <div class="row" style="padding: 3% 0%;">
+                            <div class="col-xs-10">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="row padding-left">
+                                            <div class="col-xs-12 bold font-2">
+                                                Joojeh Kebab
+                                            </div>
+                                             <a href="http://google.com">
+                                                 <div class="col-xs-12 light">
+                                                    @ Fusion 9, Hitech City, Hyderabad
+                                                </div>                                
+                                            </a>            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-2 primary-rating">
+                                <span class="float-right rating-rcmd r45" style="padding: 10% 25%; font-size: 1em;">4.5</span>
+                            </div>                        
+                        </div>                                              
+                    </div>   
+                </div>
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-sm-push-8 white-background details-wrapper" style="margin-top: 10px;">
+                        <div class="col-xs-12 my-item-recommendation-wrapper">
+                            <div class="row" style="padding: 2%;">
+                                <div class="col-xs-12 font-1-5 bna-color padding-3">
+                                    My rating
+                                </div>                               
+                            </div>
+                            <div class="loader"></div>
+                            <div class="my-item-recommendation hide">
+                                <div class="row" style="padding: 2%;">
+                                    <div class="col-xs-12 detail-type-padding">
+                                        <span class="recommendation-id hide">21</span>
+                                        <span class="item-id hide">11</span>
+                                        <span class="item-name hide">Joojeh Kebab</span>
+                                        <div class="recommend-item-desc detail-type-2"></div>
+                                        <!-- <div class="recommend-message detail-type-2">If it soothes your taste buds, let us know..</div> -->
+                                        <div class="recommend-message detail-type-2">
+                                            <span class="bold">You rated this - &nbsp;</span><span class="rating-rcmd r50">5.0</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="row align-center addRecommendButtonDiv">
+                                            <button id="addItemRecommendButton" class="bna-button recommend-button">Add a Foodview</button>
+                                        </div>
+                                    </div>                                
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <p class="light font-0-8">just now</p>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>                        
+                    </div>
+                    <div class="detail-about">
+                        <div class="col-xs-12 col-sm-8 col-sm-pull-4" style="margin-top: 10px;">
+                           <div class="row white-background details-wrapper">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-12 font-1-5 bna-color padding-3">
+                                                Foodviews
+                                            </div>    
+                                        </div>                          
+                                    </div>
+                                    <hr />
+                                    <div class="row recommended-wrapper">
+                                        <div class="col-xs-12">
+                                            <div class="my-recommendations">
+                                                <div class="col-xs-12 recommended-item cursor-pointer" onclick="openRcmdModal()">
+                                                    No one has added a foodview yet. 
+                                                    <br />
+                                                    Share a foodview ! A tiny review about this dish to help others know how it tastes and if they should give it a try.
+                                                    <br />
+                                                    <br />
+                                                    <!-- Add one now. -->
+                                                </div>
+                                            </div>
+                                            <div class="my-recommendations">
+                                                <div class="col-xs-12 recommended-item">
+                                                    <div class="float-left" style="object-fit: cover;">
+                                                        <a href="http://www.google.com">
+                                                            <img class="user-icon" src="https://scontent.xx.fbcdn.net/v/t1.0-1/p160x160/16195135_10202582907209226_8892726716716657102_n.jpg?oh=88a1701d79b3ad41916b6dd14fa254a5&oe=5938B99B" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="float-left item-desc-wrapper">
+                                                        <div class="bold item-name">
+                                                            <a href="http://www.google.com">
+                                                                Deepak Gupta
+                                                            </a>
+                                                        </div>
+                                                         <div class="light">
+                                                            14 Recommendations
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 review-item-desc">
+                                                        The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow.The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. T
+                                                    </div>
+                                                    <div class="light float-left font-0-8">
+                                                        just now
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 recommended-item">
+                                                    <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                        <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                    </div>
+                                                    <div class="float-left item-desc-wrapper">
+                                                        <div class="bold item-name">
+                                                            <a href="http://www.google.com">
+                                                                Deepak Gupta
+                                                            </a>
+                                                        </div>
+                                                         <div class="light">
+                                                            <span>14 Ratings</span><span> and 3 Foodviews</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 recommend-item-desc" style="padding: 3% 0%;"><span class="bold">Rated &nbsp;</span><span class="rating-rcmd r50">5.0</span> &nbsp; &nbsp; <span class="review">The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow.</span></div>
+                                                    <div class="light float-left font-0-8">
+                                                        2 days ago
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 recommended-item">
+                                                    <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                        <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                    </div>
+                                                    <div class="float-left item-desc-wrapper">
+                                                        <div class="bold item-name">
+                                                            <a href="http://www.google.com">
+                                                                Deepak Gupta
+                                                            </a>
+                                                        </div>
+                                                         <div class="light">
+                                                            14 Ratings and Foodviews
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 recommend-item-desc" style="padding: 3% 0%;"><span class="bold">Rated &nbsp;</span><span class="rating-rcmd r50">5.0</span> &nbsp; &nbsp; <span class="review">The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow.</span></div>
+                                                    <div class="light float-left font-0-8">
+                                                        2 days ago
+                                                    </div>
+                                                </div>   
+                                            </div>            
+                                        </div>
+                                    </div>
+                                </div>
+                           </div> 
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommendation Modal STARTS -->
+        <div class="modal fade" id="recommendModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="loader hide"></div>
+                    <div class="main-area">
+                        <div class="modal-header align-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <img src="http://cdn.bananaa.in/img/clear.svg" />
+                            </button>
+                            <h4 class="modal-title bna-color">Add a food review</h4>
+                        </div>
+                        <div class="modal-body align-center" style="padding-top: 7%;">
+                            <div>
+                                <form>
+                                    <div class="group">
+                                      <p class="hide" id="modal-recommendation-id">1</p>
+                                      <p class="hide" id="modal-item-id">2</p>
+                                      <input class="bold" type="text" data-provide="typeahead" id="modal-item-name" required="required" autocomplete="off" />
+                                      <span class="bar"></span>
+                                      <label id="modal-item-name-label">Food or drink name</label>
+                                    </div>
+                                    <div class="error-label error-label-name font-0-8 red align-left hide">
+                                        Please select the food or drink item
+                                    </div>
+                                    <div class="group">
+                                      <textarea class="recommend-desc-area" id="modal-item-desc" maxlength="200"></textarea>
+                                      <span class="bar"></span>
+                                      <label id="modal-item-desc-label">Add a mini review</label>
+                                    </div>
+                                    <div class="error-label error-label-review font-0-8 red align-left hide">
+                                        Your review needs to be minimum 50 and maximum 200 characters long
+                                    </div>
+
+                                    <div id="removeRecommendation" onclick="removeRecommendation();">
+                                        <p class="cursor-pointer light">Remove this recommendation</p>
+                                    </div>
+                                    
+                                  </form>
+                            </div>
+                        </div>
+                        <div id="recommendSubmit" class="modal-footer cursor-pointer align-center recommendSubmit">
+                            Add recommendation
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Recommendation Modal ENDS -->
+
+        <!-- Footer STARTS -->
+        <div class="row footer" align="center">
+            <div class="col-xs-12">
+                <div>
+                    <a href="https://www.facebook.com/gobananaa">
+                        <img src="img/facebook-logo.png"  class="social-icon">
+                    </a>
+                    <a href="https://twitter.com/inbananaa">
+                        <img src="img/twitter-logo.png"  class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com/bananaa.in">
+                        <img src="img/instagram-logo.png"  class="social-icon">    
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links col-xs-12">
+                <span class="footer-links-desc"><a href="about.html">About</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="contact.html">Contact</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="privacy.html">Privacy</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="terms.html">Terms</a></span>
+            </div>
+        </div>
+        <!-- Footer ENDS -->
+
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js "></script>
+    <script src="js/bootstrap3-typeahead.min.js "></script>
+    <script src="js/jqcloud.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/rcmd.js"></script>
+    <script src="js/item-detail.js"></script>    
+
+</body>
+
+</html>

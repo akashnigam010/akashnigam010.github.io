@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#9932CC">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    <title>Bananaa</title>
+
+    <!-- <link href="css/bootstrap.min.css" rel="stylesheet"></link> -->
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="css/bna-commons.css" rel="stylesheet"></link>
+    <link href="css/detail.css" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" media="only screen and (max-width: 768px), only screen and (max-device-width: 768px)" href="css/detail-mini.css" />
+    <link href="css/jqcloud.min.css" rel="stylesheet"></link>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+
+
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="hide" id="primaryImageTemp">https://bna-s3.s3.amazonaws.com/rest-img/fusion-9-hitech-city.jpg</div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row top-header">
+                    <div class="simpson header-icon bna-color">
+                        <div class="hidden-sm hidden-md hidden-lg float-left">
+                            <img class="cursor-pointer float-left" src="http://cdn.bananaa.in/img/arrow_back_black.svg" onclick="window.history.back()" />
+                        </div>
+                        <div style="float: left; display: inline;">
+                            <span class="cursor-pointer" onclick="location.href='http://www.bananaa.in';" style="margin-left: 5%;">bananaa</span>
+                        </div>
+                    </div>
+                    <!-- desktop/tablet screen -->
+                    <div class="hidden-xs">
+                        <div class="pull-right">
+                            <div class="btn-group login-info">
+                                <button type="button" id="login-button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <span id="login-info">Login</span> <span class="caret"></span>                        
+                                </button>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:logout();">My Profile</a></li>
+                                    <li><a href="javascript:logout();">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="form-horizontal">
+                            <div class="form-group-lg has-feedback" style="float: left; display: inline; width: 140px; margin-left: 8%;">
+                                <input id="topSearchLocation" class="cursor-pointer header-search-input" type="text" placeholder="Type your location" value="Hyderabad" />
+                                <i class="glyphicon icon-location form-control-feedback" style="width: 15px; height: 40px;"></i>
+                            </div>    
+                        </div>
+                        <div class="form-horizontal">
+                            <div class="form-group-lg has-feedback" style="float: left; display: inline; width: 35%; margin-left: 0.5%;">
+                                <input id="topSearchInput" class="header-search-input noloading" type="text" placeholder="Search for a restaurant, cuisine or dish" />
+                                <i class="glyphicon icon-search form-control-feedback" style="width: 15px; height: 40px;"></i>
+                                <!-- <div class="input-loader-animation-div" style="width: 100%;">
+                                    <img class="input-loader-animation" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                                </div> -->
+                            </div>    
+                        </div>
+
+                        <div style="float: left; display: inline; margin-left: 0.5%;">
+                            <button class="bna-button" style="margin: 0px; line-height: inherit;">Search</button>
+                        </div>                     
+                    </div>
+                    <!-- mobile screen -->
+                    <div class="hidden-sm hidden-md hidden-lg">
+                        <div class="btn-group pull-right" style="margin-left: 8%">
+                            <img class="dropdown-toggle" data-toggle="dropdown" src="img/ic_person_black.svg" />                      
+                            <ul class="dropdown-menu pull-right">
+                                <li><a href="javascript:logout();">My Profile</a></li>
+                                <li><a href="javascript:logout();">Logout</a></li>
+                            </ul>
+                        </div>
+                        <div class="pull-right">
+                            <img src="img/ic_search_black.svg" onclick="openSearchModal();" />
+                        </div>
+                    </div>                  
+                </div>
+            </div>
+            <!-- Full screen Modal STARTS -->
+            <div class="modal fade" id="searchModal" role="dialog" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog fullscreen-modal-dialog">
+                    <div class="modal-content fullscreen-modal-content">                    
+                        <div class="modal-header align-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <img src="http://cdn.bananaa.in/img/clear.svg" />
+                            </button>
+                            <h4 class="modal-title bold">Search</h4>
+                        </div>
+                        <div class="modal-body align-center" style="padding: 7%;">
+                            <div class="form-horizontal">
+                                <div class="form-group-lg has-feedback">
+                                    <input id="topSearchLocation" class="cursor-pointer header-search-input" type="text" placeholder="Type your location" value="Hyderabad" />
+                                    <i class="glyphicon icon-location form-control-feedback" style="width: 15px; height: 40px;"></i>
+                                </div>    
+                            </div>
+                            <div class="form-horizontal" style="margin-top: 5%;">
+                                <div class="form-group-lg has-feedback">
+                                    <input id="modalSearchInput" class="header-search-input noloading" type="text" data-provide="typeahead" placeholder="Search for a restaurant, cuisine or dish" />
+                                    <i class="glyphicon icon-search form-control-feedback" style="width: 15px; height: 40px;"></i>
+                                    <!-- <div class="input-loader-animation-div" style="width: 100%;">
+                                        <img class="input-loader-animation" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                                    </div> -->
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- Full screen Modal ENDS -->         
+        </div>
+
+        <div class="row bna-bg primary-image-wrapper">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 primary-image-banner cursor-pointer" onclick="imageView();">
+            </div>    
+        </div>        
+
+        <div class="row bna-bg sub-section">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+
+                <!-- Restaurant Heading -->
+                <div class="row white-background details-wrapper details-top-wrapper">
+                    <div class="col-xs-12">
+                        <div class="row" style="padding: 3% 0%;">
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="row padding-left">
+                                            <div class="primary-detail col-xs-12 bold font-2">
+                                                Fusion 9
+                                            </div>
+                                             <div class="secondary-detail col-xs-12 light">
+                                                Jubilee Hills, Hyderabad
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="hidden-xs col-sm-4">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="row padding-left" style="padding-top: 2%;">
+                                            <div class="col-xs-12 bold font-1-5">
+                                                380
+                                            </div>
+                                             <div class="col-xs-12 bna-color">
+                                                FOOD RECOMMENDATIONS
+                                            </div>                                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 hidden-sm hidden-md hidden-lg">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="row padding-left">
+                                            <div class="col-xs-12 padding-top">
+                                                <hr />
+                                                <span class="bold font-1-5">380</span>
+                                            <span class="bna-color">FOOD RECOMMENDATIONS</span> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>                                              
+                    </div>   
+                </div>
+
+                <!-- Popular Cuisines -->
+                <!-- <div class="row white-background details-wrapper details-top-wrapper" style="margin-top: 10px;">
+                    <div class="col-xs-12">
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12 font-1-5 bna-color padding-3">
+                                    Cuisines to look out for &nbsp;
+                                    <a style="font-size: 70%; color: #444;" href="#" data-placement="bottom" data-toggle="popover" data-trigger="hover" data-content="Based on weighted average of most recent ratings and number of times people have tried a dish" onclick="event.preventDefault();">&#9432;</a>
+                                </div>
+                            </div>
+                        </div>                        
+                        <div class="primary-detail col-xs-12 bold font-2" style="padding: 0% 4%;">
+                            <div class="float-left col-xs-3 align-center" style="object-fit: cover;">
+                                <div>
+                                    <span class="rating-rcmd r50" style="padding: 8% 8%; border-radius: 50%; font-size: 0.6em;">
+                                        5.0
+                                    </span>    
+                                </div>
+                                <div class="cuisine-heading">
+                                    Medi-terranean
+                                </div>
+                            </div>
+                            <div class="float-left col-xs-3 align-center" style="object-fit: cover;">
+                                <div>
+                                    <span class="rating-rcmd r40" style="padding: 8% 8%; border-radius: 50%; font-size: 0.6em;">
+                                        4.0
+                                    </span>      
+                                </div>
+                                <div class="cuisine-heading">
+                                    italian
+                                </div>
+                            </div>
+                            <div class="float-left col-xs-3 align-center" style="object-fit: cover;">
+                                <div>
+                                    <span class="rating-rcmd r35" style="padding: 8% 8%; border-radius: 50%; font-size: 0.6em;">
+                                        3.5
+                                    </span>       
+                                </div>
+                                <div class="cuisine-heading">
+                                    continental
+                                </div>
+                            </div>
+                            <div class="float-left col-xs-3 align-center" style="object-fit: cover;">
+                                <div>
+                                    <span class="rating-rcmd r30" style="padding: 8% 8%; border-radius: 50%;font-size: 0.6em;">
+                                        3.0
+                                    </span>      
+                                </div>
+                                <div class="cuisine-heading">
+                                    thai
+                                </div>
+                            </div>
+                        </div>                                           
+                    </div>   
+                </div> -->
+
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-sm-push-8 white-background details-wrapper" style="margin-top: 10px;">
+                        <div class="col-xs-12">
+                            <div class="row" style="padding: 2%;">
+                                <div class="col-xs-6 col-sm-12 detail-type-padding">
+                                    <div class="bna-color">Opening Hours</div>
+                                    <div class="detail-type-2">10:30 AM - 12:00 PM</div>
+                                </div>
+                                <div class="col-xs-6 col-sm-12 detail-type-padding">
+                                    <div class="bna-color">Phone Number</div>
+                                    <div><a href="tel:555-555-5555" data-rel="external">04078567898</a></div>
+                                </div>
+                                <div class="clearfix visible-xs-block"></div>
+                                <div class="col-xs-6 col-sm-12 detail-type-padding">
+                                    <div class="bna-color">Average Cost</div>
+                                    <div>Rs. 1200 for 2 (approx)</div>
+                                </div>
+                                <div class="col-xs-6 col-sm-12 detail-type-padding">
+                                    <div class="bna-color">Type</div>
+                                    <div>Casual Dining</div>
+                                </div>
+                                <div class="clearfix visible-xs-block"></div>
+                                <div class="col-xs-12 detail-type-padding">
+                                    <div class="bna-color">Address</div>
+                                    <div>5th Floor, Inorbit Mall, Hitech City, Hyderabad 500085</div>
+                                </div>
+                            </div>    
+                        </div>                        
+                    </div>
+                    <div class="detail-about">
+                        <div class="col-xs-12 col-sm-8 col-sm-pull-4" style="margin-top: 10px;">
+                            <div class="row white-background details-wrapper">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="col-xs-12 font-1-5 bna-color padding-3">
+                                                Cuisines and Spread &nbsp;
+                                                <a style="font-size: 70%; color: #444;" href="#" data-placement="bottom" data-toggle="popover" data-trigger="hover" data-content="Rated based on weighted average of most recent food ratings, user credibility and number of times people have tried a dish." onclick="event.preventDefault();">&#9432;</a>
+                                            </div>
+                                        </div>
+                                        <hr /> 
+                                        <div class="row recommended-wrapper">
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <a class="cursor-pointer" href="#">
+                                                        <div class="col-xs-12 recommended-item">
+                                                            <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                                <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                            </div>
+                                                            <div class="float-left item-desc-wrapper">
+                                                                <div class="bold item-name">
+                                                                    Italian
+                                                                </div>
+                                                                 <div class="light">
+                                                                    spread of 30+ dishes
+                                                                </div>
+                                                            </div>
+                                                            <div class="float-right" style="width: 10%; padding-top: 2.5%">
+                                                                <span class="float-right rating-rcmd r50" style="padding: 10% 40%;">5.0</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 recommended-item">
+                                                        <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                            <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                        </div>
+                                                        <div class="float-left item-desc-wrapper">
+                                                            <div class="bold item-name">
+                                                                Mexican
+                                                            </div>
+                                                             <div class="light">
+                                                                spread of 10+ dishes
+                                                            </div>
+                                                        </div>
+                                                        <div class="float-right" style="width: 10%; padding-top: 2.5%;">
+                                                            <span class="float-right rating-rcmd r45" style="padding: 10% 40%;">4.5</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row padding-top">                                            
+                                        </div>                                               
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row white-background details-wrapper" style="margin-top: 10px;">
+                                <div class="col-xs-12">
+                                    <div class="col-xs-12">
+                                        <div class="row">
+                                            <div class="col-xs-12 font-1-5 bna-color padding-3">
+                                                <!-- Most tempting and loved food here &nbsp; -->
+                                                Delectable dishes &nbsp;
+                                                <a style="font-size: 70%; color: #444;" href="#" data-placement="bottom" data-toggle="popover" data-trigger="hover" data-content="Based on weighted average of most recent ratings, user credibility and number of times people have tried a dish." onclick="event.preventDefault();">&#9432;</a>
+                                            </div>
+                                        </div>
+                                        <hr /> 
+                                        <div class="row recommended-wrapper">
+                                            <div class="col-xs-12">
+                                                <div class="row">
+                                                    <a class="cursor-pointer" href="#">
+                                                        <div class="col-xs-12 recommended-item">
+                                                            <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                                <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                            </div>
+                                                            <div class="float-left item-desc-wrapper">
+                                                                <div class="bold item-name">
+                                                                    Joojeh Kebab
+                                                                </div>
+                                                                 <div class="light">
+                                                                    22 people rated
+                                                                </div>
+                                                            </div>
+                                                            <div class="float-right" style="width: 10%; padding-top: 2.5%">
+                                                                <span class="float-right rating-rcmd r50" style="padding: 10% 40%;">5.0</span>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12 recommended-item">
+                                                        <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                            <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                        </div>
+                                                        <div class="float-left item-desc-wrapper">
+                                                            <div class="bold item-name">
+                                                                Lowley Shirley kebab 
+                                                            </div>
+                                                             <div class="light">
+                                                                15 people rated
+                                                            </div>
+                                                        </div>
+                                                        <div class="float-right" style="width: 10%; padding-top: 2.5%;">
+                                                            <span class="float-right rating-rcmd r45" style="padding: 10% 40%;">4.5</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- <hr /> -->
+                                            </div>
+                                        </div>
+                                        <div class="row padding-top">
+                                            <hr />
+                                            <button type="button" class="bna-button-light pull-right" onclick="loadPopularDishes();">See More</button>
+                                        </div>                                               
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row white-background details-wrapper" style="margin-top: 10px;">
+                                <div class="col-xs-12">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="col-xs-12 font-1-5 bna-color padding-3">
+                                                My Foodview
+                                            </div> 
+                                            <div class="col-xs-12 light padding-3" style="padding-top: 0%;">
+                                                My ratings and foodviews at Fusion 9
+                                            </div>    
+                                        </div>                                   
+                                    </div>
+                                    </hr>
+                                    <div class="row recommended-wrapper">
+                                        <div class="col-xs-12">
+                                            <div class="row my-recommendations">
+                                                <div class="col-xs-12 recommended-item cursor-pointer my-recommended-item">
+                                                    <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                        <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                    </div>
+                                                    <div class="float-left item-desc-wrapper">
+                                                        <span class="hide recommendation-id">12</span>
+                                                        <span class="hide item-id">12</span>
+                                                        <div class="bold item-name">
+                                                            Veg Bullets
+                                                        </div>
+                                                         <div class="light">
+                                                            You and 34 others rated this
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 recommend-item-desc"><span class="bold">Rated &nbsp;</span><span class="rating-rcmd r45">4.5</span> &nbsp; </div>
+                                                    <div class="light float-left font-0-8">2 days ago</div>
+                                                </div>
+                                                <div class="col-xs-12 recommended-item cursor-pointer my-recommended-item">
+                                                    <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                        <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                                    </div>
+                                                    <div class="float-left item-desc-wrapper">
+                                                        <span class="hide recommendation-id">12</span>
+                                                        <span class="hide item-id">12</span>
+                                                        <div class="bold item-name">
+                                                            Veg Bullets
+                                                        </div>
+                                                         <div class="light">
+                                                            You and 34 others rated this
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 recommend-item-desc"><span class="bold">Rated &nbsp;</span><span class="rating-rcmd r50">5.0</span> &nbsp; &nbsp; <span class="review">The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow. The smell is awesome, plus it tastes like meadow.</span></div>
+                                                    <div class="light float-left font-0-8">2 days ago</div>
+                                                </div>                                        
+                                            </div>
+                                            <div class="row align-center addRecommendButtonDiv">
+                                                <hr />
+                                                <button id="addRecommendButton" class="bna-button recommend-button">Rate and Foodview</button>
+                                            </div>                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                      
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Image View STARTS -->
+        <div class="modal fade" id="imageViewModal" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog">            
+                <div class="modal-content" style="border-radius: 0px;">
+                    <img class="full-width detail-image" style="position: relative;" src="">
+                    <img class="cursor-pointer" data-dismiss="modal" aria-label="Close" src="img/ic_clear_white.svg" style="position: absolute; top: -25px; right: 0px;" />
+                    <div style="padding: 2% 4%;">
+                        <div class="inline-block" style="width: 14%;">
+                            <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/logo-pr.svg" />
+                        </div>
+                        <div class="inline-block item-desc-wrapper" style="vertical-align: top;">
+                            <div class="font-1-3 bold item-name primary-detail"></div>
+                             <div class="bna-color secondary-detail"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Image View ENDS -->
+
+        <!-- Recommendation Modal STARTS -->
+        <div class="modal fade" id="recommendModal" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog fullscreen-modal-dialog">
+                <div class="modal-content fullscreen-modal-content">
+                    <div class="modal-header align-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <img src="https://bna-s3.s3.amazonaws.com/img/clear.svg" />
+                        </button>
+                        <div>
+                            <div class="rcmd-title bna-color padding-1">
+                                ADD FOOD RATING
+                            </div>
+                            <div class="hide error-review padding-1">
+                                Sorry, only 50 to 200 characters in a foodview please.
+                            </div>
+                            <div class="hide success-rating padding-1">
+                                Thank you ! Your rating has been saved.
+                            </div>
+                        </div>                            
+                        <ul class="nav nav-pills">
+                          <li class="active"><a data-toggle="tab" href="#ratingTab">Rate</a></li>
+                          <li><a data-toggle="tab" href="#reviewTab">Foodview</a></li>
+                        </ul>
+                    </div>
+                    <div class="modal-body align-center">
+                        <div class="tab-content">
+                            <div class="ratingTab tab-pane fade in active">
+                                <div class="group">
+                                    <div class="inline-block">
+                                        <input class="global-search noloading align-center rcmd-width" type="text" data-provide="typeahead" id="modal-item-name" required="required" autocomplete="off" placeholder="Type a few characters of the food or drink here" />
+                                        <span class="bar rcmd-width"></span>
+                                        <!-- <div class="input-loader-animation-div rcmd-width">
+                                            <img class="input-loader-animation" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/ajax-loader.svg" />
+                                        </div> -->
+                                    </div>                                      
+                                </div>
+                                <div class="rating-widget group">
+                                    <div class="rating-section inline-block padding-2">
+                                        <img id="s1" class="rate-star cursor-pointer" src="https://bna-s3.s3.amazonaws.com/img/rate-e.png" />
+                                        <img id="s2" class="rate-star cursor-pointer" src="https://bna-s3.s3.amazonaws.com/img/rate-e.png" />
+                                        <img id="s3" class="rate-star cursor-pointer" src="https://bna-s3.s3.amazonaws.com/img/rate-e.png" />
+                                        <img id="s4" class="rate-star cursor-pointer" src="https://bna-s3.s3.amazonaws.com/img/rate-e.png" />
+                                        <img id="s5" class="rate-star cursor-pointer" src="https://bna-s3.s3.amazonaws.com/img/rate-e.png" />
+                                    </div>
+                                    <div style="margin-top: 6%;">
+                                        <span class="rating-txt bold font-1-5 simpson light">ADD YOUR RATING</span>
+                                    </div>                                        
+                                </div>
+                                <div class="group hide goto-review align-center">
+                                    <button class="bna-button rcmd-width" style="line-height: 2;" onclick="navigateToReview()">ADD A FOODVIEW</button>
+                                </div>                                   
+                            </div>
+                            <div class="reviewTab tab-pane fade in">
+                                <form>
+                                    <div class="rTitle padding-2 light"></div>
+                                    <div class="padding-2">
+                                        <span class="rRating simpson font-1-5"></span>
+                                    </div>
+                                    <div class="inline-block">
+                                        <textarea class="recommend-desc-area rcmd-width" id="modal-item-desc" maxlength="200" placeholder="Share a foodview ! A tiny review about this dish to help others know how it tastes and if they should give it a try. Just remember to keep it short, a minimum of 50 and a maximum of 200 characters only :)"></textarea>
+                                        <span class="bar rcmd-width"></span>
+                                        <div class="font-0-8" style="padding-top: 1%;">
+                                            <span class="char-count pull-right">22/200</span>    
+                                        </div>                                                
+                                    </div>                                  
+                                    <div>
+                                        <button class="bna-button-light" onclick="navigateToRate();">Back</button>
+                                        <button class="bna-button" onclick="addRecommendation()">Submit</button>    
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Recommendation Modal ENDS -->
+
+        <!-- Alert Modal STARTS -->
+        <div class="modal fade" id="alertModal" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="loader hide"></div>
+                    <div class="main-area">
+                        <div class="modal-header align-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-times" aria-hidden="true" style="color:black"></i>
+                            </button>
+                            <h4 class="modal-title bold" id="alertHeading">Confirm Action</h4>
+                        </div>
+                        <div class="modal-body align-center">
+                            <div id="alertText" align="center" style="padding-top: 5%;">
+                                Are you sure you want to do this?
+                            </div>
+                        </div>
+                        <div class="modal-footer align-center">
+                            <button class="bna-button" style="width: 25%;" id="confirmAlertButton" >Yes</button>
+                            <button class="bna-button-light" style="width: 25%;" data-dismiss="modal" aria-label="Close">No</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Alert Modal ENDS -->
+
+        <!-- Load More Modal STARTS -->
+        <div class="modal fade" id="loadMoreModal" role="dialog">
+            <div class="modal-dialog">            
+                <div class="modal-content">
+                    <div class="main-area container-fluid">
+                        <div class="modal-header align-center">
+                            <button type="button" class="close float-left" data-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-arrow-left" aria-hidden="true" style="color:black"></i>
+                            </button>
+                            <h4 class="modal-title bold bna-color" id="alertHeading">
+                                Most tempting food here &nbsp;
+                                <a style="font-size: 70%; color: #444;" href="#" data-placement="bottom" data-toggle="popover" data-trigger="hover" data-content="Based on weighted average of most recent ratings and number of times people have tried a dish" onclick="event.preventDefault();">&#9432;</a>
+                            </h4>
+                        </div>
+                        <div class="modal-body row">
+                            <div class="col-xs-12">
+                                <div class="loadmore-wrapper">
+                                    <div class="row">
+                                        <div class="col-xs-12 recommended-item">
+                                            <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                            </div>
+                                            <div class="float-left item-desc-wrapper">
+                                                <div class="bold item-name">
+                                                    Joojeh Kebab
+                                                </div>
+                                                 <div>
+                                                    22 people recommended
+                                                </div>
+                                            </div>
+                                            <div class="float-right" style="width: 10%; padding-top: 2.5%;">
+                                                <span class="float-right rating-rcmd r50" style="padding: 0 20%;">5.0</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 recommended-item">
+                                            <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                            </div>
+                                            <div class="float-left item-desc-wrapper">
+                                                <div class="bold item-name">
+                                                    Lowley Shirley
+                                                </div>
+                                                 <div>
+                                                    15 people recommended
+                                                </div>
+                                            </div>
+                                            <div class="float-right" style="width: 10%; padding-top: 2.5%;">
+                                                <span class="float-right rating-rcmd r50" style="padding: 0 20%;">5.0</span>
+                                            </div>                                                                           
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 recommended-item">
+                                            <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                            </div>
+                                            <div class="float-left item-desc-wrapper">
+                                                <div class="bold item-name">
+                                                    Lowley Shirley
+                                                </div>
+                                                 <div>
+                                                    15 people recommended
+                                                </div>
+                                            </div>
+                                            <div class="float-right" style="width: 10%; padding-top: 2.5%;">
+                                                <span class="float-right rating-rcmd r45" style="padding: 0 20%;">4.5</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 recommended-item">
+                                            <div class="float-left" style="object-fit: cover; width: 15%;">
+                                                <img class="user-icon" src="https://s3.ap-south-1.amazonaws.com/bna-s3/commons/default-item.png" />
+                                            </div>
+                                            <div class="float-left item-desc-wrapper">
+                                                <div class="bold item-name">
+                                                    Lowley Shirley Lowley ShirleyLowley Shirley
+                                                </div>
+                                                 <div>
+                                                    15 people recommended
+                                                </div>
+                                            </div>
+                                            <div class="float-right" style="width: 10%; padding-top: 2.5%;">
+                                                <span class="float-right rating-rcmd r25" style="padding: 0 20%;">2.5</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="modal-footer align-center bna-bg-primary white" data-dismiss="modal" aria-label="Close">
+                        Close
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Load More Modal ENDS -->
+
+        <!-- Loading Modal STARTS -->
+        <div class="modal fade" id="loadingModal" role="dialog">
+            <div class="modal-dialog">            
+                <div class="modal-content">
+                    <div class="main-area container-fluid">
+                        <div class="modal-header align-center">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i class="fa fa-times" aria-hidden="true" style="color:black"></i>
+                            </button>
+                            <h4 class="modal-title bold bna-color" id="alertHeading">Hold tight!</h4>
+                        </div>
+                        <div class="modal-body row">
+                            <div class="loader"></div>
+                        </div>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Loading Modal ENDS -->
+
+        <!-- Footer STARTS -->
+        <div class="row footer" align="center">
+            <div class="col-xs-12">
+                <div>
+                    <a href="https://www.facebook.com/gobananaa">
+                        <img src="img/facebook-logo.png"  class="social-icon">
+                    </a>
+                    <a href="https://twitter.com/inbananaa">
+                        <img src="img/twitter-logo.png"  class="social-icon">
+                    </a>
+                    <a href="https://www.instagram.com/bananaa.in">
+                        <img src="img/instagram-logo.png"  class="social-icon">    
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links col-xs-12">
+                <span class="footer-links-desc"><a href="about.html">About</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="contact.html">Contact</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="privacy.html">Privacy</a></span>
+                <span class="footer-links-desc">|</span>
+                <span class="footer-links-desc"><a href="terms.html">Terms</a></span>
+            </div>
+        </div>
+        <!-- Footer ENDS -->
+
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.min.js "></script>
+    <script src="js/bootstrap3-typeahead.min.js "></script>
+    <script src="js/jqcloud.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/rcmd.js"></script>
+    <script src="js/detail.js"></script>    
+
+</body>
+
+</html>
