@@ -1,21 +1,21 @@
 @font-face {
     font-family: bna-web;
-    src: url('http://cdn.bananaa.in/fonts/bna-web-regular.woff') format('woff');
+    src: url('../fonts/bna-web-regular.woff') format('woff');
 }
 
 @font-face {
     font-family: bna-bold;
-    src: url('http://cdn.bananaa.in/fonts/bna-web-bold.woff') format('woff');
+    src: url('../fonts/bna-web-bold.woff') format('woff');
 }
 
 @font-face {
     font-family: bna-icon;
-    src: url('http://cdn.bananaa.in/fonts/bna-icon-font.woff') format('woff');
+    src: url('../fonts/bna-icon-font.woff') format('woff');
 }
 
 @font-face {
     font-family: bna-simpson;
-    src: url('http://cdn.bananaa.in/fonts/bna-simpson-font.ttf') format('truetype');
+    src: url('../fonts/bna-simpson-font.ttf') format('truetype');
 }
 
 html {
